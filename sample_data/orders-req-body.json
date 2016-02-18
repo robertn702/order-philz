@@ -1,0 +1,22 @@
+{
+  "order": {
+    "store_id": "1z3ofd",
+    "bag_items_attributes": [
+      {
+        "menu_item_id": "23dgi0k7",
+        "special_instructions": "",
+        "quantity": 1,
+        "selected_menu_item_options": "{\"67322\":[418458],\"67325\":[418464],\"67326\":[418470],\"67327\":[418475],\"67328\":[418482],\"67329\":[418485]}",
+        "user_name": "Robert Niimi",
+        "user_id": "21fgk8rp"
+      }
+    ],
+    "selected_wait_time": 15,
+    "preparation_type": 0,
+    "past_order_id": "22e77l1b0",
+    "cart_guid": "0e496189-e0bb-436e-b717-71a70dc39f30",
+    "payment_card_id": "11pq9xfj",
+    "tier_delivery_fees": true,
+    "unwaivable_delivery_fees": true
+  }
+}
