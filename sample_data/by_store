@@ -1,3 +1,5 @@
+# get past orders from individual store
+
 GET https://www.orderaheadapp.com/api/v1.0.10/users/orders/by_store?per=30&shallow=1&web_serializer=1
 
 # REQUEST HEADERS

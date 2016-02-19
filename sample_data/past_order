@@ -1,3 +1,5 @@
+# get a single past order's details
+
 GET https://www.orderaheadapp.com/users/pastorders/{:orderId}.json
 
 # REQUEST HEADERS

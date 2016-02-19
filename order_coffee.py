@@ -1,6 +1,5 @@
-# from order_ahead import OrderAhead
-
 URL = 'https://www.orderaheadapp.com/sign_in'
+PAST_ORDERS = 'https://www.orderaheadapp.com/api/v1.0.10/users/orders/by_store?per=30&shallow=1&web_serializer=1'
 
 import cookielib
 import json
@@ -35,3 +34,4 @@ parsed_response = json.load(response)
 print 'PARSED RESPONSE'
 print 'success: ' + str(parsed_response['success'])
 print 'token: ' + parsed_response['data']['csrf_token']
+
