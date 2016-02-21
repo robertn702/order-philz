@@ -2,15 +2,101 @@
 
 GET https://www.orderaheadapp.com/api/v1.0.10/users/orders/by_store?per=30&shallow=1&web_serializer=1
 
-# REQUEST HEADERS
+# SUCCESSFUL REQUEST HEADERS EXAMPLE
 Accept:application/json, text/javascript, */*; q=0.01
 Accept-Encoding:gzip, deflate, sdch
 Accept-Language:en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4
 Connection:keep-alive
-Cookie:km_lv=x; hiring_toast=1; ajs_anonymous_id=%222aa0e309-4b82-42d5-8d5d-102da8dd2802%22; _orderahead_session=53e57b68134c3d1283c077f014247dfd; main_site=true; _lastRequest=1455807505157; _gat=1; position=%7B%22coords%22%3A%7B%22latitude%22%3A37.565427199999995%2C%22longitude%22%3A-122.32853949999999%7D%7D; _lastPulled=1455807510150; PRUM_EPISODES=s=1455807572530&r=https%3A//www.orderaheadapp.com/places/philz-coffee-san-mateo--san-mateo-ca/checkout; ajs_group_id=null; ajs_user_id=%2221fgk8rp%22; _ga=GA1.2.2011708016.1455386838; amplitude_idorderaheadapp.com=eyJkZXZpY2VJZCI6ImYxZDk4MDdlLTQ2ZTgtNDIzNS1hMTQ2LWJjOTFkOTI5ODkyYiIsInVzZXJJZCI6IjIxZmdrOHJwIiwib3B0T3V0IjpmYWxzZSwic2Vzc2lvbklkIjoxNDU1ODA3NTA2OTE2LCJsYXN0RXZlbnRUaW1lIjoxNDU1ODA3NTc3NjM3LCJldmVudElkIjozMCwiaWRlbnRpZnlJZCI6MTYsInNlcXVlbmNlTnVtYmVyIjo0Nn0=; kvcd=1455807578029; km_vs=1; km_ai=21fgk8rp; km_ni=21fgk8rp; km_uq=
+Cookie:
+  km_lv=x;
+  hiring_toast=1;
+  ajs_anonymous_id=%222aa0e309-4b82-42d5-8d5d-102da8dd2802%22;
+
+  _orderahead_session=53e57b68134c3d1283c077f014247dfd;
+  _lastRequest=1455807505157;
+  _gat=1;
+  _lastPulled=1455807510150;
+  _ga=GA1.2.2011708016.1455386838;
+
+  main_site=true;
+  position=%7B%22coords%22%3A%7B%22latitude%22%3A37.565427199999995%2C%22longitude%22%3A-122.32853949999999%7D%7D;
+  PRUM_EPISODES=s=1455807572530&r=https%3A//www.orderaheadapp.com/places/philz-coffee-san-mateo--san-mateo-ca/checkout;
+  ajs_group_id=null;
+  ajs_user_id=%2221fgk8rp%22;
+  amplitude_idorderaheadapp.com=eyJkZXZpY2VJZCI6ImYxZDk4MDdlLTQ2ZTgtNDIzNS1hMTQ2LWJjOTFkOTI5ODkyYiIsInVzZXJJZCI6IjIxZmdrOHJwIiwib3B0T3V0IjpmYWxzZSwic2Vzc2lvbklkIjoxNDU1ODA3NTA2OTE2LCJsYXN0RXZlbnRUaW1lIjoxNDU1ODA3NTc3NjM3LCJldmVudElkIjozMCwiaWRlbnRpZnlJZCI6MTYsInNlcXVlbmNlTnVtYmVyIjo0Nn0=;
+  kvcd=1455807578029;
+  km_vs=1;
+  km_ai=21fgk8rp;
+  km_ni=21fgk8rp;
+  km_uq=
 Host:www.orderaheadapp.com
 If-None-Match:"6dc9218cb9d4b93cae5294f2d84dfd0d"
 Referer:https://www.orderaheadapp.com/pastorders
 User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36
 X-CSRF-Token:pJnGLEc+MpbTtiASVgImX7gjZNDyz/Ww6rW0Msd7Qzk=
 X-Requested-With:XMLHttpRequest
+
+# SUCCESSFUL COOKIES EXAMPLE
+km_lv=x;
+ajs_anonymous_id=%222aa0e309-4b82-42d5-8d5d-102da8dd2802%22;
+_orderahead_session=59bac2f70de85eb714ed02ee8c4503ba;
+_lastRequest=1455998838353;
+_ga=GA1.2.2011708016.1455386838;
+_gat=1;
+_lastPulled=1455998842329;
+main_site=true;
+hiring_toast=1;
+kvcd=1455998839245;
+km_vs=1;
+km_ai=21fgk8rp;
+km_ni=21fgk8rp;
+amplitude_idorderaheadapp.com=eyJkZXZpY2VJZCI6ImYxZDk4MDdlLTQ2ZTgtNDIzNS1hMTQ2LWJjOTFkOTI5ODkyYiIsInVzZXJJZCI6IjIxZmdrOHJwIiwib3B0T3V0IjpmYWxzZSwic2Vzc2lvbklkIjoxNDU1OTk4ODM5MzY5LCJsYXN0RXZlbnRUaW1lIjoxNDU1OTk4ODM5MzgyLCJldmVudElkIjo1MywiaWRlbnRpZnlJZCI6MjEsInNlcXVlbmNlTnVtYmVyIjo3NH0=;
+position=%7B%22coords%22%3A%7B%22latitude%22%3A37.5669597%2C%22longitude%22%3A-122.32371970000001%7D%7D;
+__utmt=1;
+__utma=195170931.2011708016.1455386838.1455998846.1455998846.1;
+__utmb=195170931.1.10.25;
+__utmc=195170931;
+__utmz=195170931.1455998846.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none);
+km_uq=;
+PRUM_EPISODES=s=1455999388373&r=https%3A//www.orderaheadapp.com/pastorders;
+ajs_group_id=null;
+ajs_user_id=%2221fgk8rp%22
+
+
+# FAILED RESPONSE HEADER
+{
+  'Access-Control-Allow-Origin': '*',
+  'Cache-Control': 'must-revalidate, private, max-age=0',
+  'Connection': 'keep-alive',
+  'Content-Encoding': 'gzip',
+  'Content-Type': 'text/html; charset=utf-8',
+  'Date': 'Sat, 20 Feb 2016 20:36:30 GMT',
+  'Etag': '"f5692cdc257eaab53021d0239ee37492"',
+  'Server': 'Cowboy',
+  'Set-Cookie': 'main_site=true; path=/',
+  'Transfer-Encoding': 'chunked',
+  'Vary': 'Accept-Encoding',
+  'Via': '1.1 vegur',
+  'X-Rack-Cache': 'miss'
+  'X-Request-Id': '65e8f19b-874f-4a69-9787-eaf97fc5976f',
+  'X-Runtime': '0.035379',
+  'X-Ua-Compatible': 'IE=Edge,chrome=1',
+}
+
+# SUCCESSFUL RESPONSE HEADER
+
+Access-Control-Allow-Origin: *
+Cache-Control: must-revalidate, private, max-age=0
+Connection: keep-alive
+Content-Encoding: gzip
+Content-Type: application/json; charset=utf-8
+Date: Sat, 20 Feb 2016 20: 16: 30 GMT
+Etag: "1f4b03ce725372376ae053695d2a444c"
+Server: Cowboy
+Transfer-Encoding: chunked
+Vary: Accept-Encoding
+Via: 1.1 vegur
+X-Rack-Cache: miss
+X-Request-Id: 9276185d-3c68-4cf5-8f3a-97824e2fe3f4
+X-Runtime: 0.115152
+X-Ua-Compatible: IE=Edge,chrome=1
