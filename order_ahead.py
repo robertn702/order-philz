@@ -1,13 +1,15 @@
 # import credentials
 # import cookielib
 import requests
+import json
 from Cookie import SimpleCookie
 s = requests.Session()
 
 URLS = {
   'login': 'https://www.orderaheadapp.com/sign_in',
   'by_store': 'https://www.orderaheadapp.com/api/v1.0.10/users/orders/by_store?per=30&shallow=1&web_serializer=1',
-  'current_user': 'https://www.orderaheadapp.com/current_user'
+  'current_user': 'https://www.orderaheadapp.com/current_user',
+  'order': 'https://www.orderaheadapp.com/orders?client_name=computer&api_version=1.0.10'
 }
 
 default_headers = {
@@ -55,13 +57,29 @@ class OrderAhead():
     r = s.get(URLS['current_user'])
     if is_json(r):
       parsed_response = r.json()
-      print '@getCurrentUser RESPONSE: ' + r.text
+      print 'OrderAhead: Current user is {0} {1}'.format(parsed_response['first_name'], parsed_response['last_name'])
 
   def getOrdersByStore(self):
     r = s.get(URLS['by_store'])
     if is_json(r):
       parsed_response = r.json()
-      print '@getOrdersByStore RESPONSE: ' + r.text
+      data = parsed_response['data']
+      print 'first past order: ' + str(data[0])
+      first_order = data[0]
+      for key in first_order:
+        print key
+      # data = json.load(parsed_response['data'])
+      # for past_order in data:
+
+      # print data
     else:
       print 'XXXXX ERROR, response must be JSON. Type: ' + r.headers['Content-Type']
+
+  def order(self):
+    data = {}
+
+    r = s.post(URLS['order'], data=data)
+    if is_json(r):
+      parsed_response = r.json()
+
 
