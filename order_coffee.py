@@ -5,4 +5,6 @@ from order_ahead import OrderAhead
 oa = OrderAhead(credentials.ORDER_AHEAD_USERNAME, credentials.ORDER_AHEAD_PASSWORD)
 
 # oa.getCurrentUser();
-oa.getOrdersByStore();
+# oa.getOrdersByStore();
+oa.sessionOrder();
+# oa.order();

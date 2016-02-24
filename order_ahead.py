@@ -2,14 +2,36 @@
 # import cookielib
 import requests
 import json
+import uuid
+import random
+import re
 from Cookie import SimpleCookie
 s = requests.Session()
+
+# function(e){
+#   var t = 0|16 * Math.random();
+#   var r = "x" === e ? t:8|3&t;
+#   return r.toString(16)
+# }
+
+def getUUID():
+  def generateUUID(e):
+    t = int(round(float(0|16) * random.random()))
+    # r = "x" === e ? t : 8|3&t;
+    r = t if "x" == e else 8|3&t
+    return str(r)
+
+  seed_uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+  # return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,
+  #     function(e){var t,r;return t=0|16*Math.random(),r="x"===e?t:8|3&t,r.toString(16)})
+  return re.sub(r"[xy]", lambda x: generateUUID(x), seed_uuid)
 
 URLS = {
   'login': 'https://www.orderaheadapp.com/sign_in',
   'by_store': 'https://www.orderaheadapp.com/api/v1.0.10/users/orders/by_store?per=30&shallow=1&web_serializer=1',
   'current_user': 'https://www.orderaheadapp.com/current_user',
-  'order': 'https://www.orderaheadapp.com/orders?client_name=computer&api_version=1.0.10'
+  'order': 'https://www.orderaheadapp.com/orders?client_name=computer&api_version=1.0.10',
+  'session-order': 'https://www.orderaheadapp.com/session-order'
 }
 
 default_headers = {
@@ -34,6 +56,7 @@ def is_json(r):
 
 class OrderAhead():
   token = None
+  cart_guid = uuid.uuid1()
 
   def __init__(self, username, password):
     self.login(username, password);
@@ -68,18 +91,58 @@ class OrderAhead():
       first_order = data[0]
       for key in first_order:
         print key
-      # data = json.load(parsed_response['data'])
-      # for past_order in data:
-
-      # print data
     else:
-      print 'XXXXX ERROR, response must be JSON. Type: ' + r.headers['Content-Type']
+      print 'ERROR, response must be JSON. Type: ' + r.headers['Content-Type']
+
+  def sessionOrder(self):
+    print 'CUSTOM UUID'
+    print getUUID();
+
+    order = {
+      "order": {
+        "store_id":"1z3ofd",
+        "bag_items_attributes":[
+          {
+            "menu_item_id":"23dgi0k7",
+            "special_instructions":"",
+            "quantity":1,
+            "selected_menu_item_options":"{\"67322\":[418458],\"67325\":[418464],\"67326\":[418470],\"67327\":[418475],\"67328\":[418482],\"67329\":[418485]}",
+            "user_name":"Robert Niimi",
+            "user_id":"21fgk8rp"
+          }
+        ],
+        "preparation_type":0,
+        "cart_guid":str(self.cart_guid),
+        "tier_delivery_fees":True,
+        "unwaivable_delivery_fees":True,
+        "store_slug":"philz-coffee-san-mateo--san-mateo-ca"
+      }
+    }
+
+    self.session_order = order
+    data = json.dumps(order)
+    # print 'SESSION ORDER:'
+    # print str(data)
+
+    r = s.put(URLS['session-order'], data=data)
 
   def order(self):
-    data = {}
+    order = self.session_order.copy()
+    order['order'].update({
+      "selected_wait_time":25,
+      "payment_card_id":"11pq9xfj"
+    })
+    data = json.dumps(order)
 
-    r = s.post(URLS['order'], data=data)
-    if is_json(r):
-      parsed_response = r.json()
+    # print 'ORDER ORDER: '
+    # print str(data)
+
+    # r = s.post(URLS['order'], data=data)
+    # if is_json(r):
+    #   parsed_response = r.json()
+    #   print parsed_response['message']
+    #   print str(parsed_response)
+    # else:
+    #   print r.text
 
 
