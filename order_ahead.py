@@ -72,7 +72,7 @@ class OrderAhead():
       'Cookie': '_orderahead_session=' + r.cookies['_orderahead_session']
     })
 
-  def getWebApp(self):
+  def getWebpage(self):
     r = requests.get(URLS['web_app'])
     print 'WEB APP'
     print r.text
