@@ -8,3 +8,5 @@ oa = OrderAhead(credentials.ORDER_AHEAD_USERNAME, credentials.ORDER_AHEAD_PASSWO
 # oa.getOrdersByStore();
 oa.sessionOrder();
 # oa.order();
+
+# print 'getUUID: ' + str(getUUID())

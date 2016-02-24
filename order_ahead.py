@@ -8,22 +8,14 @@ import re
 from Cookie import SimpleCookie
 s = requests.Session()
 
-# function(e){
-#   var t = 0|16 * Math.random();
-#   var r = "x" === e ? t:8|3&t;
-#   return r.toString(16)
-# }
-
 def getUUID():
-  def generateUUID(e):
-    t = int(round(float(0|16) * random.random()))
-    # r = "x" === e ? t : 8|3&t;
-    r = t if "x" == e else 8|3&t
-    return str(r)
-
   seed_uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-  # return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,
-  #     function(e){var t,r;return t=0|16*Math.random(),r="x"===e?t:8|3&t,r.toString(16)})
+  def generateUUID(e):
+    match_val = e.group(0)
+    t = int(round(float(0|16) * random.random()))
+    r = t if "x" == match_val else 8|3&t
+    return format(r, 'x')
+
   return re.sub(r"[xy]", lambda x: generateUUID(x), seed_uuid)
 
 URLS = {
@@ -56,7 +48,7 @@ def is_json(r):
 
 class OrderAhead():
   token = None
-  cart_guid = uuid.uuid1()
+  cart_guid = getUUID()
 
   def __init__(self, username, password):
     self.login(username, password);
@@ -121,8 +113,8 @@ class OrderAhead():
 
     self.session_order = order
     data = json.dumps(order)
-    # print 'SESSION ORDER:'
-    # print str(data)
+    print 'SESSION ORDER:'
+    print str(data)
 
     r = s.put(URLS['session-order'], data=data)
 
