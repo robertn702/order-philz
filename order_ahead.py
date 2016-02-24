@@ -8,17 +8,9 @@ import re
 from Cookie import SimpleCookie
 s = requests.Session()
 
-def getUUID():
-  seed_uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-  def generateUUID(e):
-    match_val = e.group(0)
-    t = int(round(float(0|16) * random.random()))
-    r = t if "x" == match_val else 8|3&t
-    return format(r, 'x')
-
-  return re.sub(r"[xy]", lambda x: generateUUID(x), seed_uuid)
-
 URLS = {
+  'web_app': 'https://www.orderaheadapp.com',
+  'current_orders' : 'https://www.orderaheadapp.com/api/v1.0.10/users/orders/current',
   'login': 'https://www.orderaheadapp.com/sign_in',
   'by_store': 'https://www.orderaheadapp.com/api/v1.0.10/users/orders/by_store?per=30&shallow=1&web_serializer=1',
   'current_user': 'https://www.orderaheadapp.com/current_user',
@@ -48,11 +40,23 @@ def is_json(r):
 
 class OrderAhead():
   token = None
-  cart_guid = getUUID()
+  cart_guid = None
 
   def __init__(self, username, password):
     self.login(username, password);
     self.login(username, password);
+    self.cart_guid = self.getUUID();
+
+  def getUUID(self):
+    seed_uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+    def generateUUID(e):
+      match_val = e.group(0)
+      t = int(round(float(0|16) * random.random()))
+      r = t if "x" == match_val else 8|3&t
+      return format(r, 'x')
+
+    return re.sub(r"[xy]", lambda x: generateUUID(x), seed_uuid)
+
 
   def login(self, username, password):
     data = {
@@ -68,17 +72,31 @@ class OrderAhead():
       'Cookie': '_orderahead_session=' + r.cookies['_orderahead_session']
     })
 
+  def getWebApp(self):
+    r = requests.get(URLS['web_app'])
+    print 'WEB APP'
+    print r.text
+
   def getCurrentUser(self):
     r = s.get(URLS['current_user'])
     if is_json(r):
       parsed_response = r.json()
       print 'OrderAhead: Current user is {0} {1}'.format(parsed_response['first_name'], parsed_response['last_name'])
 
+  def getCurrentOrders(self):
+    r = s.get(URLS['current_orders'])
+    if is_json(r):
+      current_orders = r.json()['orders']
+      print 'current_orders: ' + str(current_orders)
+      return current_orders
+
+  def hasCurrentOrders(self):
+    return len(self.getCurrentOrders()) > 0;
+
   def getOrdersByStore(self):
     r = s.get(URLS['by_store'])
     if is_json(r):
-      parsed_response = r.json()
-      data = parsed_response['data']
+      data = r.json()['data']
       print 'first past order: ' + str(data[0])
       first_order = data[0]
       for key in first_order:
@@ -87,9 +105,6 @@ class OrderAhead():
       print 'ERROR, response must be JSON. Type: ' + r.headers['Content-Type']
 
   def sessionOrder(self):
-    print 'CUSTOM UUID'
-    print getUUID();
-
     order = {
       "order": {
         "store_id":"1z3ofd",
@@ -113,10 +128,12 @@ class OrderAhead():
 
     self.session_order = order
     data = json.dumps(order)
-    print 'SESSION ORDER:'
-    print str(data)
+    # print 'SESSION ORDER:'
+    # print str(data)
 
     r = s.put(URLS['session-order'], data=data)
+    print 'SESSION ORDER RESPONSE'
+    print r.text
 
   def order(self):
     order = self.session_order.copy()

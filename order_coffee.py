@@ -4,9 +4,16 @@ from order_ahead import OrderAhead
 
 oa = OrderAhead(credentials.ORDER_AHEAD_USERNAME, credentials.ORDER_AHEAD_PASSWORD)
 
-# oa.getCurrentUser();
-# oa.getOrdersByStore();
-oa.sessionOrder();
-# oa.order();
+print 'oa.cart_guid: ' + oa.cart_guid
+
+# oa.getCurrentUser()
+# oa.getOrdersByStore()
+# oa.getWebApp()
+# oa.getCurrentOrders()
+has_orders = oa.hasCurrentOrders()
+print 'has_orders: ' + str(has_orders)
+
+oa.sessionOrder()
+# oa.order()
 
 # print 'getUUID: ' + str(getUUID())
