@@ -21,7 +21,7 @@ URLS = {
 default_headers = {
   'Accept': 'application/json, text/javascript, */*; q=0.01',
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36',
-  'X-Requested-With': 'XMLHttpRequest',
+  'X-Requested-With': 'XMLHttpRequest'
 }
 
 s.headers.update(default_headers)
@@ -105,53 +105,53 @@ class OrderAhead():
       print 'ERROR, response must be JSON. Type: ' + r.headers['Content-Type']
 
   def sessionOrder(self):
-    order = {
+    self.session_order = {
       "order": {
-        "store_id":"1z3ofd",
-        "bag_items_attributes":[
+        "store_id": "1z3ofd",
+        "bag_items_attributes": [
           {
-            "menu_item_id":"23dgi0k7",
-            "special_instructions":"",
-            "quantity":1,
-            "selected_menu_item_options":"{\"67322\":[418458],\"67325\":[418464],\"67326\":[418470],\"67327\":[418475],\"67328\":[418482],\"67329\":[418485]}",
-            "user_name":"Robert Niimi",
-            "user_id":"21fgk8rp"
+            "menu_item_id": "23dgi0k7",
+            "special_instructions": "",
+            "quantity": 1,
+            "selected_menu_item_options": "{\"67322\":[418458],\"67325\":[418464],\"67326\":[418470],\"67327\":[418475],\"67328\":[418482],\"67329\":[418485]}",
+            "user_name": "Robert Niimi",
+            "user_id": "21fgk8rp"
           }
         ],
-        "preparation_type":0,
-        "cart_guid":str(self.cart_guid),
-        "tier_delivery_fees":True,
-        "unwaivable_delivery_fees":True,
-        "store_slug":"philz-coffee-san-mateo--san-mateo-ca"
+        "preparation_type": 0,
+        "cart_guid": str(self.cart_guid),
+        "tier_delivery_fees": True,
+        "unwaivable_delivery_fees": True,
+        "store_slug": "philz-coffee-san-mateo--san-mateo-ca"
       }
     }
 
-    self.session_order = order
-    data = json.dumps(order)
-    # print 'SESSION ORDER:'
-    # print str(data)
+    headers = s.headers.copy()
+    headers.update({'Content-Type': 'application/json'})
 
-    r = s.put(URLS['session-order'], data=data)
-    print 'SESSION ORDER RESPONSE'
-    print r.text
+    r = s.put(URLS['session-order'], data=json.dumps(self.session_order), headers=headers)
+    print 'Session Order Status Code: ' + str(r.status_code)
 
   def order(self):
     order = self.session_order.copy()
     order['order'].update({
-      "selected_wait_time":25,
+      "selected_wait_time": 25,
       "payment_card_id":"11pq9xfj"
     })
-    data = json.dumps(order)
 
-    # print 'ORDER ORDER: '
-    # print str(data)
+    headers = s.headers.copy()
+    headers.update({'Content-Type': 'application/json'})
 
-    # r = s.post(URLS['order'], data=data)
-    # if is_json(r):
-    #   parsed_response = r.json()
-    #   print parsed_response['message']
-    #   print str(parsed_response)
-    # else:
-    #   print r.text
+    r = s.post(URLS['order'], data=json.dumps(order), headers=headers)
+
+    if r.status_code == 500:
+      print 'Order Failed'
+
+    if is_json(r):
+      parsed_response = r.json()
+      print parsed_response['message']
+      print str(parsed_response)
+    else:
+      print r.text
 
 

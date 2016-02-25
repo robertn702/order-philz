@@ -8,14 +8,11 @@ oa = OrderAhead(credentials.ORDER_AHEAD_USERNAME, credentials.ORDER_AHEAD_PASSWO
 # oa.getOrdersByStore()
 # oa.getWebpage()
 # oa.getCurrentOrders()
-print 'oa.cart_guid: ' + oa.cart_guid
-has_orders = oa.hasCurrentOrders()
-print 'has_orders: ' + str(has_orders)
 
 oa.sessionOrder()
-# oa.order()
+oa.sessionOrder()
 
-# print 'getUUID: ' + str(getUUID())
-
-# if not oa.hasCurrentOrders():
-#   oa.order()
+# print 'has_orders: ' + str(has_orders)
+if not oa.hasCurrentOrders():
+  print 'ordering coffee...'
+  oa.order()
