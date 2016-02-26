@@ -105,7 +105,7 @@ class OrderAhead():
     r = s.get(URLS['store-menu'])
     if r.status_code is 200:
       if is_json(r):
-        return data = r.json()['0']
+        return r.json()['0']
     else:
       print 'failed to get store menu'
 
