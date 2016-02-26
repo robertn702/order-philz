@@ -133,16 +133,39 @@ class OrderAhead():
     print 'Session Order Status Code: ' + str(r.status_code)
 
   def order(self):
-    order = self.session_order.copy()
-    order['order'].update({
-      "selected_wait_time": 25,
-      "payment_card_id":"11pq9xfj"
-    })
+    # order = self.session_order.copy()
+    # order['order'].update({
+    #   "selected_wait_time": 25,
+    #   "payment_card_id":"11pq9xfj"
+    # })
+
+    order_obj = {
+      "order": {
+        "store_id": "1z3ofd",
+        "bag_items_attributes": [
+          {
+            "menu_item_id": "23dgi0k7",
+            "special_instructions": "",
+            "quantity": 1,
+            "selected_menu_item_options": "{\"67322\":[418458],\"67325\":[418464],\"67326\":[418470],\"67327\":[418475],\"67328\":[418482],\"67329\":[418485]}",
+            "user_name": "Robert Niimi",
+            "user_id": "21fgk8rp"
+          }
+        ],
+        "cart_guid": str(self.cart_guid),
+        "payment_card_id":"11pq9xfj",
+        "preparation_type": 0,
+        "selected_wait_time": 25,
+        "store_slug": "philz-coffee-san-mateo--san-mateo-ca",
+        "tier_delivery_fees": True,
+        "unwaivable_delivery_fees": True
+      }
+    }
 
     headers = s.headers.copy()
     headers.update({'Content-Type': 'application/json'})
 
-    r = s.post(URLS['order'], data=json.dumps(order), headers=headers)
+    r = s.post(URLS['order'], data=json.dumps(order_obj), headers=headers)
 
     if r.status_code == 500:
       print 'Order Failed'
@@ -150,7 +173,7 @@ class OrderAhead():
     if is_json(r):
       parsed_response = r.json()
       print parsed_response['message']
-      print str(parsed_response)
+      return parsed_response['order']
     else:
       print r.text
 
