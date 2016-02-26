@@ -58,7 +58,6 @@ class OrderAhead():
 
     return re.sub(r"[xy]", lambda x: generateUUID(x), seed_uuid)
 
-
   def login(self, username, password):
     data = {
       'user[email]' : username,
@@ -75,21 +74,17 @@ class OrderAhead():
 
   def getWebpage(self):
     r = requests.get(URLS['web_app'])
-    print 'WEB APP'
-    print r.text
+    return r.text
 
   def getCurrentUser(self):
     r = s.get(URLS['current_user'])
     if is_json(r):
-      parsed_response = r.json()
-      print 'OrderAhead: Current user is {0} {1}'.format(parsed_response['first_name'], parsed_response['last_name'])
+      return r.json()
 
   def getCurrentOrders(self):
     r = s.get(URLS['current_orders'])
     if is_json(r):
-      current_orders = r.json()['orders']
-      print 'current_orders: ' + str(current_orders)
-      return current_orders
+      return r.json()['orders']
 
   def hasCurrentOrders(self):
     return len(self.getCurrentOrders()) > 0;
@@ -173,9 +168,7 @@ class OrderAhead():
       print 'Order Failed'
 
     if is_json(r):
-      parsed_response = r.json()
-      print parsed_response['message']
-      return parsed_response['order']
+      return r.json()['order']
     else:
       print r.text
 
