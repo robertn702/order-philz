@@ -172,6 +172,7 @@ class OrderAhead():
 
     if is_json(r):
       parsed_response = r.json()
+      print 'success: ' + str(parsed_response['success'])
       print parsed_response['message']
       return parsed_response['order']
     else:

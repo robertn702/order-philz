@@ -11,14 +11,16 @@ def order_coffee():
     print 'ordering coffee...'
     order = oa.order()
 
-    data = {
-      'value1': order['id'],
-      'value2': datetime.today().strftime('%m/%d'),
-      'value3': float(order['total'])/100
-    }
+    if order['success']:
+      print 'logging order to spreadsheet...'
+      data = {
+        'value1': order['id'],
+        'value2': datetime.today().strftime('%m/%d'),
+        'value3': float(order['total'])/100
+      }
 
-    r = requests.post('https://maker.ifttt.com/trigger/order_coffee/with/key/d5KrJ5q56csJvG-J3Misj7', data=sample_data)
-    print 'r.status_code: ' + str(r.status_code)
+      r = requests.post('https://maker.ifttt.com/trigger/order_coffee/with/key/d5KrJ5q56csJvG-J3Misj7', data=data)
+      print 'r.status_code: ' + str(r.status_code)
 
   else:
     print 'coffee already on order...'
