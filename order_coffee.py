@@ -3,14 +3,12 @@ from order_ahead import OrderAhead
 import credentials
 import requests
 
-
 def order_coffee():
   # log in to order ahead
   oa = OrderAhead(credentials.ORDER_AHEAD_USERNAME, credentials.ORDER_AHEAD_PASSWORD)
 
   if not oa.hasCurrentOrders():
     print 'ordering coffee...'
-
     order = oa.order()
 
     data = {
