@@ -3,3 +3,5 @@ credentials.py
 *.pyc
 *.orig
 *.log
+
+sample_data/
