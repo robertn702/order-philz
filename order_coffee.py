@@ -22,5 +22,5 @@ def order_coffee():
     r = requests.post('https://maker.ifttt.com/trigger/order_coffee/with/key/d5KrJ5q56csJvG-J3Misj7', data=sample_data)
     print 'r.status_code: ' + str(r.status_code)
 
-  else
+  else:
     print 'coffee already on order...'
