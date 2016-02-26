@@ -15,7 +15,8 @@ URLS = {
   'by_store': 'https://www.orderaheadapp.com/api/v1.0.10/users/orders/by_store?per=30&shallow=1&web_serializer=1',
   'current_user': 'https://www.orderaheadapp.com/current_user',
   'order': 'https://www.orderaheadapp.com/orders?client_name=computer&api_version=1.0.10',
-  'session-order': 'https://www.orderaheadapp.com/session-order'
+  'session-order': 'https://www.orderaheadapp.com/session-order',
+  'store-menu': 'https://www.orderaheadapp.com/api/v1.0.10/stores/1z3ofd/menu'
 }
 
 default_headers = {
@@ -96,13 +97,17 @@ class OrderAhead():
   def getOrdersByStore(self):
     r = s.get(URLS['by_store'])
     if is_json(r):
-      data = r.json()['data']
-      print 'first past order: ' + str(data[0])
-      first_order = data[0]
-      for key in first_order:
-        print key
+      return r.json()['data']
     else:
       print 'ERROR, response must be JSON. Type: ' + r.headers['Content-Type']
+
+  def getStoreMenu(self):
+    r = s.get(URLS['store-menu'])
+    if r.status_code is 200:
+      if is_json(r):
+        return data = r.json()['0']
+    else:
+      print 'failed to get store menu'
 
   def sessionOrder(self):
     self.session_order = {
@@ -133,11 +138,8 @@ class OrderAhead():
     print 'Session Order Status Code: ' + str(r.status_code)
 
   def order(self):
-    # order = self.session_order.copy()
-    # order['order'].update({
-    #   "selected_wait_time": 25,
-    #   "payment_card_id":"11pq9xfj"
-    # })
+    store_menu = self.getStoreMenu()
+    prep_duration = store_menu['default_prep_duration'] + store_menu['additional_prep_duration']
 
     order_obj = {
       "order": {
@@ -153,9 +155,9 @@ class OrderAhead():
           }
         ],
         "cart_guid": str(self.cart_guid),
-        "payment_card_id":"11pq9xfj",
+        "payment_card_id": "11pq9xfj",
         "preparation_type": 0,
-        "selected_wait_time": 25,
+        "selected_wait_time": prep_duration,
         "store_slug": "philz-coffee-san-mateo--san-mateo-ca",
         "tier_delivery_fees": True,
         "unwaivable_delivery_fees": True
@@ -172,7 +174,6 @@ class OrderAhead():
 
     if is_json(r):
       parsed_response = r.json()
-      print 'success: ' + str(parsed_response['success'])
       print parsed_response['message']
       return parsed_response['order']
     else:
