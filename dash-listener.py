@@ -39,6 +39,7 @@ while True:
     dest_ip = socket.inet_ntoa(arp_detailed[8])
 
     if source_mac in macs:
+        print 'source: ' + print macs[source_mac]
         if macs[source_mac] == 'coffee_dash':
             print 'coffee_dash button fired!'
             order_coffee()
