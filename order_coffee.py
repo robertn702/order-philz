@@ -8,8 +8,9 @@ IFTTT_MAKER_URL = 'https://maker.ifttt.com/trigger/order_coffee/with/key/' + cre
 def order_coffee():
   # log in to order ahead
   oa = OrderAhead(credentials.ORDER_AHEAD_USERNAME, credentials.ORDER_AHEAD_PASSWORD)
+  now = datetime.today()
 
-  if not oa.hasCurrentOrders():
+  if not oa.hasCurrentOrders() and now.hour < 15:
     print 'ordering coffee...'
     order_response = oa.order()
     print order_response['message']
@@ -19,7 +20,7 @@ def order_coffee():
       order = order_response['order']
       data = {
         'value1': order['id'],
-        'value2': datetime.today().strftime('%m/%d'),
+        'value2': now.strftime('%m/%d'),
         'value3': float(order['total'])/100
       }
 
