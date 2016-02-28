@@ -27,7 +27,7 @@ def order_coffee():
       print order_response['message']
 
       # do not log expense if it is the weekend
-      if order_response['success'] && now.weekday() < 5:
+      if order_response['success'] and now.weekday() < 5:
         print 'logging order to spreadsheet...'
         order = order_response['order']
         expense_order(order)
