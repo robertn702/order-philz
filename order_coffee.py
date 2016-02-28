@@ -20,17 +20,18 @@ def order_coffee():
   oa = OrderAhead(credentials.ORDER_AHEAD_USERNAME, credentials.ORDER_AHEAD_PASSWORD)
   now = datetime.today()
 
-  if not oa.hasCurrentOrders() and now.hour < 15:
-    print 'ordering coffee...'
-    order_response = oa.order()
-    print order_response['message']
-
-    if order_response['success']:
-      print 'logging order to spreadsheet...'
-      order = order_response['order']
+  if not oa.hasCurrentOrders():
+    if now.hour < 15:
+      print 'ordering coffee...'
+      order_response = oa.order()
+      print order_response['message']
 
       # do not log expense if it is the weekend
-      if now.weekday() < 5:
+      if order_response['success'] && now.weekday() < 5:
+        print 'logging order to spreadsheet...'
+        order = order_response['order']
         expense_order(order)
+    else:
+      print "it's too late for coffee..."
   else:
     print 'coffee already on order...'
