@@ -16,16 +16,16 @@ def expense_order(order):
   print 'log to spreadsheet status: ' + str(r.status_code)
 
 def order_coffee():
+  if now.hour > 14:
+    print "it's too late for coffee..."
+    return
+
   # log in to order ahead
   oa = OrderAhead(credentials.ORDER_AHEAD_USERNAME, credentials.ORDER_AHEAD_PASSWORD)
   now = datetime.today()
 
   if oa.hasCurrentOrders():
     print 'coffee already on order...'
-    return
-
-  if now.hour > 14:
-    print "it's too late for coffee..."
     return
 
   print 'ordering coffee...'
