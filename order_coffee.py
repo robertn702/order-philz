@@ -12,7 +12,7 @@ def expense_order(order, now):
     data = {
         'value1': order['id'],
         'value2': now.strftime('%m/%d'),
-        'value3': float(order['total'])/100
+        'value3': float(order['total']) / 100
     }
 
     request = requests.post(IFTTT_MAKER_URL, data=data)
