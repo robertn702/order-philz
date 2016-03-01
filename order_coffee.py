@@ -3,10 +3,10 @@ from datetime import datetime
 import requests
 
 from order_ahead import OrderAhead
-import credentials
+from credentials import IFTTT_MAKER_KEY, ORDER_AHEAD_USERNAME, ORDER_AHEAD_PASSWORD
 
 IFTTT_TRIGGER_URL = 'https://maker.ifttt.com/trigger/order_coffee/with/key/'
-IFTTT_MAKER_URL = IFTTT_TRIGGER_URL + credentials.IFTTT_MAKER_KEY
+IFTTT_MAKER_URL = IFTTT_TRIGGER_URL + IFTTT_MAKER_KEY
 
 def expense_order(order, now):
     data = {
@@ -26,10 +26,7 @@ def order_coffee():
         return
 
     # log in to order ahead
-    order_ahead_client = OrderAhead(
-        credentials.ORDER_AHEAD_USERNAME,
-        credentials.ORDER_AHEAD_PASSWORD
-    )
+    order_ahead_client = OrderAhead(ORDER_AHEAD_USERNAME, ORDER_AHEAD_PASSWORD)
 
     if order_ahead_client.has_current_orders():
         print 'coffee already on order...'
