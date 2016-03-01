@@ -1,3 +1,4 @@
+"""ORDER AHEAD"""
 from Cookie import SimpleCookie
 import json
 import random
@@ -5,10 +6,9 @@ import re
 import requests
 
 URLS = {
-    'web_app': 'https://www.orderaheadapp.com',
     'current_orders' : 'https://www.orderaheadapp.com/api/v1.0.10/users/orders/current',
     'login': 'https://www.orderaheadapp.com/sign_in',
-    'by_store': 'https://www.orderaheadapp.com/api/v1.0.10/users/orders/by_store?per=30&shallow=1&web_serializer=1',
+    'by_store': 'https://www.orderaheadapp.com/api/v1.0.10/users/orders/by_store',
     'current_user': 'https://www.orderaheadapp.com/current_user',
     'order': 'https://www.orderaheadapp.com/orders?client_name=computer&api_version=1.0.10',
     'session-order': 'https://www.orderaheadapp.com/session-order',
@@ -17,7 +17,8 @@ URLS = {
 
 DEFAULT_HEADERS = {
     'Accept': 'application/json, text/javascript, */* q=0.01',
-    'User-Agent': 'Mozilla/5.0 (Macintosh Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (Macintosh Intel Mac OS X 10_11_3) \
+        AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36',
     'X-Requested-With': 'XMLHttpRequest'
 }
 
@@ -31,23 +32,22 @@ def cookie_to_dict(cookie_str):
 
     return cookies
 
-def is_json(r):
-    return 'application/json' in r.headers['Content-Type']
+def is_json(request):
+    return 'application/json' in request.headers['Content-Type']
 
 def get_uuid():
-    # """Return the pathname of the KOS root directory."""
     seed_uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-    def generate_uuid(e):
-        match_val = e.group(0)
-        t = int(round(float(0|16) * random.random()))
-        r = t if match_val == 'x' else 8|3&t
-        return format(r, 'x')
+    def generate_uuid(e_val):
+        match_val = e_val.group(0)
+        t_val = int(round(float(0|16) * random.random()))
+        request = t_val if match_val == 'x' else 8|3&t
+        return format(request, 'x')
 
     return re.sub(r"[xy]", lambda x: generate_uuid(x), seed_uuid)
 
 
-class OrderAhead():
-    """Return the pathname of the KOS root directory."""
+class OrderAhead(object):
+    """Order Ahead Client"""
     token = None
     cart_guid = None
     s = requests.Session()
@@ -59,55 +59,55 @@ class OrderAhead():
         self.cart_guid = get_uuid()
 
     def login(self, username, password):
-        # """Return the pathname of the KOS root directory."""
+        """Logs user in"""
         data = {
-            'user[email]' : username,
-            'user[password]' : password
+            'user[email]': username,
+            'user[password]': password
         }
 
-        r = self.s.post(URLS['login'], data=data, headers=self.s.headers)
-        parsed_response = r.json()
+        request = self.s.post(URLS['login'], data=data, headers=self.s.headers)
+        parsed_response = request.json()
         token = parsed_response['data']['csrf_token']
         self.s.headers.update({
-          'X-CSRF-Token': token,
-          'Cookie': '_orderahead_session=' + r.cookies['_orderahead_session']
+            'X-CSRF-Token': token,
+            'Cookie': '_orderahead_session=' + r.cookies['_orderahead_session']
         })
 
-    def get_webpage(self):
-        """Return the pathname of the KOS root directory."""
-        r = self.s.get(URLS['web_app'])
-        return r.text
-
     def get_current_user(self):
-        r = self.s.get(URLS['current_user'])
-        if is_json(r):
-            return r.json()
+        """returns current user object"""
+        request = self.s.get(URLS['current_user'])
+        if is_json(request):
+            return request.json()
 
     def get_current_orders(self):
-        r = self.s.get(URLS['current_orders'])
-        if is_json(r):
-            return r.json()['orders']
+        """returns current orders object"""
+        request = self.s.get(URLS['current_orders'])
+        if is_json(request):
+            return request.json()['orders']
 
     def has_current_orders(self):
+        """returns boolean whether user has a current order"""
         return len(self.get_current_orders()) > 0
 
     def get_orders_by_store(self):
-        r = self.s.get(URLS['by_store'])
-        if is_json(r):
-            return r.json()['data']
+        """returns past orders by store"""
+        request = self.s.get(URLS['by_store'])
+        if is_json(request):
+            return request.json()['data']
         else:
-            print 'ERROR, response must be JSON. Type: ' + r.headers['Content-Type']
+            print 'ERROR, response must be JSON. Type: ' + request.headers['Content-Type']
 
     def get_store_menu(self):
-        r = self.s.get(URLS['store-menu'])
-        if r.status_code is 200:
-            if is_json(r):
-                return r.json()
+        """returns store menu"""
+        request = self.s.get(URLS['store-menu'])
+        if request.status_code is 200:
+            if is_json(request):
+                return request.json()
         else:
             print 'failed to get store menu'
 
     # def sessionOrder(self):
-    #     self.session_order = {
+    #     self.session_orderequest = {
     #         "order": {
     #             "store_id": "1z3ofd",
     #             "bag_items_attributes": [
@@ -131,10 +131,11 @@ class OrderAhead():
     #     headers = s.headers.copy()
     #     headers.update({'Content-Type': 'application/json'})
 
-    #     r = s.put(URLS['session-order'], data=json.dumps(self.session_order), headers=headers)
+    #     request = s.put(URLS['session-order'], data=json.dumps(self.session_order), headers=headers)
     #     print 'Session Order Status Code: ' + str(r.status_code)
 
     def order(self):
+        """places an order"""
         store_menu = self.get_store_menu()
         prep_duration = store_menu['default_prep_duration'] + store_menu['additional_prep_duration']
 
@@ -164,14 +165,12 @@ class OrderAhead():
         headers = self.s.headers.copy()
         headers.update({'Content-Type': 'application/json'})
 
-        r = self.s.post(URLS['order'], data=json.dumps(order_obj), headers=headers)
+        request = self.s.post(URLS['order'], data=json.dumps(order_obj), headers=headers)
 
-        if r.status_code == 500:
+        if request.status_code == 500:
             print 'Order Failed'
 
-        if is_json(r):
-            return r.json()
+        if is_json(request):
+            return request.json()
         else:
-            print r.text
-
-
+            print request.text
