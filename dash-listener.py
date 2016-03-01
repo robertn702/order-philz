@@ -1,14 +1,11 @@
-from datetime import datetime
+"""listens for dash button press"""
 from order_coffee import order_coffee
 import binascii
-import json
 import socket
 import struct
-import time
-import urllib2
 
 # Replace these fake MAC addresses and nicknames with your own
-macs = {
+MACS = {
     '600308a708f0': 'macbook_pro',
     '74da3841131e': 'pi_web_server',
     '881fa12a2ae1': 'C',
@@ -38,9 +35,9 @@ while True:
     source_ip = socket.inet_ntoa(arp_detailed[6])
     dest_ip = socket.inet_ntoa(arp_detailed[8])
 
-    if source_mac in macs:
-        print 'source: ' + macs[source_mac]
-        if macs[source_mac] == 'coffee_dash':
+    if source_mac in MACS:
+        print 'source: ' + MACS[source_mac]
+        if MACS[source_mac] == 'coffee_dash':
             print 'coffee_dash button fired!'
             order_coffee()
     else:

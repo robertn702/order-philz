@@ -1,9 +1,12 @@
+"""Orders Coffee"""
 from datetime import datetime
-from order_ahead import OrderAhead
-import credentials
 import requests
 
-IFTTT_MAKER_URL = 'https://maker.ifttt.com/trigger/order_coffee/with/key/' + credentials.IFTTT_MAKER_KEY
+from order_ahead import OrderAhead
+import credentials
+
+IFTTT_TRIGGER_URL = 'https://maker.ifttt.com/trigger/order_coffee/with/key/'
+IFTTT_MAKER_URL = IFTTT_TRIGGER_URL + credentials.IFTTT_MAKER_KEY
 
 def expense_order(order, now):
     data = {
@@ -12,24 +15,28 @@ def expense_order(order, now):
         'value3': float(order['total'])/100
     }
 
-    r = requests.post(IFTTT_MAKER_URL, data=data)
-    print 'log to spreadsheet status: ' + str(r.status_code)
+    request = requests.post(IFTTT_MAKER_URL, data=data)
+    print 'log to spreadsheet status: ' + str(request.status_code)
 
 def order_coffee():
+    """orders coffee"""
     now = datetime.today()
     if now.hour > 14:
         print "it's too late for coffee..."
-    return
+        return
 
     # log in to order ahead
-    oa = OrderAhead(credentials.ORDER_AHEAD_USERNAME, credentials.ORDER_AHEAD_PASSWORD)
+    order_ahead_client = OrderAhead(
+        credentials.ORDER_AHEAD_USERNAME,
+        credentials.ORDER_AHEAD_PASSWORD
+    )
 
-    if oa.has_current_orders():
+    if order_ahead_client.has_current_orders():
         print 'coffee already on order...'
         return
 
     print 'ordering coffee...'
-    order_response = oa.order()
+    order_response = order_ahead_client.order()
     print order_response['message']
 
     # log expense if it is a weekday
