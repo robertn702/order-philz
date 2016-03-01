@@ -1,8 +1,9 @@
 """listens for dash button press"""
-from order_coffee import order_coffee
 import binascii
 import socket
 import struct
+
+from order_coffee import order_coffee
 
 # Replace these fake MAC addresses and nicknames with your own
 MACS = {
@@ -17,28 +18,30 @@ MACS = {
     '9cd21e6c1933': 'cheap_dell'
 }
 
-rawSocket = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003))
-# rawSocket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.htons(0x0003))
+if hasattr(socket, 'AF_PACKET'):
+    RAW_SOCKET = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003))
+elif hasattr(socket, 'AF_INET'):
+    RAW_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.htons(0x0003))
 
 while True:
-    packet = rawSocket.recvfrom(2048)
-    ethernet_header = packet[0][0:14]
-    ethernet_detailed = struct.unpack("!6s6s2s", ethernet_header)
+    PACKET = RAW_SOCKET.recvfrom(2048)
+    ETHERNET_HEADER = PACKET[0][0:14]
+    ETHERNET_DETAILED = struct.unpack("!6s6s2s", ETHERNET_HEADER)
     # skip non-ARP packets
-    ethertype = ethernet_detailed[2]
-    if ethertype != '\x08\x06':
+    ETHERTYPE = ETHERNET_DETAILED[2]
+    if ETHERTYPE != '\x08\x06':
         continue
     # read out data
-    arp_header = packet[0][14:42]
-    arp_detailed = struct.unpack("2s2s1s1s2s6s4s6s4s", arp_header)
-    source_mac = binascii.hexlify(arp_detailed[5])
-    source_ip = socket.inet_ntoa(arp_detailed[6])
-    dest_ip = socket.inet_ntoa(arp_detailed[8])
+    ARP_HEADER = PACKET[0][14:42]
+    ARP_DETAILED = struct.unpack("2s2s1s1s2s6s4s6s4s", ARP_HEADER)
+    SOURCE_MAC = binascii.hexlify(ARP_DETAILED[5])
+    SOURCE_IP = socket.inet_ntoa(ARP_DETAILED[6])
+    DEST_IP = socket.inet_ntoa(ARP_DETAILED[8])
 
-    if source_mac in MACS:
-        print 'source: ' + MACS[source_mac]
-        if MACS[source_mac] == 'coffee_dash':
+    if SOURCE_MAC in MACS:
+        print 'source: ' + MACS[SOURCE_MAC]
+        if MACS[SOURCE_MAC] == 'coffee_dash':
             print 'coffee_dash button fired!'
             order_coffee()
     else:
-        print "Unknown MAC " + source_mac + " from IP " + source_ip
+        print "Unknown MAC " + SOURCE_MAC + " from IP " + SOURCE_IP

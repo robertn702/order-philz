@@ -40,7 +40,7 @@ def get_uuid():
     def generate_uuid(e_val):
         match_val = e_val.group(0)
         t_val = int(round(float(0|16) * random.random()))
-        request = t_val if match_val == 'x' else 8|3&t
+        request = t_val if match_val == 'x' else 8|3&t_val
         return format(request, 'x')
 
     return re.sub(r"[xy]", lambda x: generate_uuid(x), seed_uuid)
@@ -50,10 +50,10 @@ class OrderAhead(object):
     """Order Ahead Client"""
     token = None
     cart_guid = None
-    s = requests.Session()
+    session = requests.Session()
 
     def __init__(self, username, password):
-        self.s.headers.update(DEFAULT_HEADERS)
+        self.session.headers.update(DEFAULT_HEADERS)
         self.login(username, password)
         self.login(username, password)
         self.cart_guid = get_uuid()
@@ -65,23 +65,23 @@ class OrderAhead(object):
             'user[password]': password
         }
 
-        request = self.s.post(URLS['login'], data=data, headers=self.s.headers)
+        request = self.session.post(URLS['login'], data=data, headers=self.session.headers)
         parsed_response = request.json()
         token = parsed_response['data']['csrf_token']
-        self.s.headers.update({
+        self.session.headers.update({
             'X-CSRF-Token': token,
-            'Cookie': '_orderahead_session=' + r.cookies['_orderahead_session']
+            'Cookie': '_orderahead_session=' + request.cookies['_orderahead_session']
         })
 
     def get_current_user(self):
         """returns current user object"""
-        request = self.s.get(URLS['current_user'])
+        request = self.session.get(URLS['current_user'])
         if is_json(request):
             return request.json()
 
     def get_current_orders(self):
         """returns current orders object"""
-        request = self.s.get(URLS['current_orders'])
+        request = self.session.get(URLS['current_orders'])
         if is_json(request):
             return request.json()['orders']
 
@@ -91,7 +91,7 @@ class OrderAhead(object):
 
     def get_orders_by_store(self):
         """returns past orders by store"""
-        request = self.s.get(URLS['by_store'])
+        request = self.session.get(URLS['by_store'])
         if is_json(request):
             return request.json()['data']
         else:
@@ -99,7 +99,7 @@ class OrderAhead(object):
 
     def get_store_menu(self):
         """returns store menu"""
-        request = self.s.get(URLS['store-menu'])
+        request = self.session.get(URLS['store-menu'])
         if request.status_code is 200:
             if is_json(request):
                 return request.json()
@@ -162,10 +162,10 @@ class OrderAhead(object):
             }
         }
 
-        headers = self.s.headers.copy()
+        headers = self.session.headers.copy()
         headers.update({'Content-Type': 'application/json'})
 
-        request = self.s.post(URLS['order'], data=json.dumps(order_obj), headers=headers)
+        request = self.session.post(URLS['order'], data=json.dumps(order_obj), headers=headers)
 
         if request.status_code == 500:
             print 'Order Failed'
