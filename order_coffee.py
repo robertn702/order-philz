@@ -21,7 +21,8 @@ def expense_order(order, now):
     }
 
     request = requests.post(IFTTT_MAKER_URL, data=data)
-    print 'log to spreadsheet status: ' + str(request.status_code)
+    if request.status_code is 200:
+        say('expense logged')
 
 def order_coffee():
     """orders coffee"""
