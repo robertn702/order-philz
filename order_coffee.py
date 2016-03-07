@@ -1,8 +1,8 @@
 """Orders Coffee"""
 from datetime import datetime
 import re
-import requests
 import subprocess
+import requests
 
 from order_ahead import OrderAhead
 from credentials import IFTTT_MAKER_KEY, ORDER_AHEAD_USERNAME, ORDER_AHEAD_PASSWORD
@@ -11,7 +11,7 @@ IFTTT_TRIGGER_URL = 'https://maker.ifttt.com/trigger/order_coffee/with/key/'
 IFTTT_MAKER_URL = IFTTT_TRIGGER_URL + IFTTT_MAKER_KEY
 
 def say(say_this):
-    subprocess.call(['espeak', say_this])
+    subprocess.call(['say', say_this])
 
 def expense_order(order, now):
     data = {
