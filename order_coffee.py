@@ -68,6 +68,10 @@ def order_coffee():
         say(message)
 
         leave_time = parsed_time - timedelta(minutes=5)
+        print 'LEAVE TIME'
+        print 'hour: ' + str(leave_time.hour)
+        print 'minute: ' + str(leave_time.minute)
+        print "{0}:{1}".format(leave_time.hour, leave_time.minute)
         say_at("Time to pick up your coffee", "{0}:{1}".format(leave_time.hour, leave_time.minute))
 
         # log expense if it is a weekday
