@@ -42,7 +42,9 @@ def order_coffee():
         print message
         return
 
-    print 'ordering coffee...'
+    message = 'ordering coffee...'
+    print message
+    say(message)
     order_response = order_ahead_client.order()
     print order_response['message']
 
