@@ -23,14 +23,14 @@ DEFAULT_HEADERS = {
 }
 
 
-def cookie_to_dict(cookie_str):
-    cookie = SimpleCookie()
-    cookie.load(cookie_str)
-    cookies = {}
-    for key, morsel in cookie.items():
-        cookies[key] = morsel.value
+# def cookie_to_dict(cookie_str):
+#     cookie = SimpleCookie()
+#     cookie.load(cookie_str)
+#     cookies = {}
+#     for key, morsel in cookie.items():
+#         cookies[key] = morsel.value
 
-    return cookies
+#     return cookies
 
 def is_json(request):
     return 'application/json' in request.headers['Content-Type']
