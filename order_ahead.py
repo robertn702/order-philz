@@ -70,7 +70,7 @@ class OrderAhead(object):
         token = parsed_response['data']['csrf_token']
         self.session.headers.update({
             'X-CSRF-Token': token,
-            'Cookie': '_orderahead_session=' + request.cookies['_orderahead_session']
+            'Cookie': '_orderahead_session=' + request.cookies.get('_orderahead_session', domain='https://www.orderaheadapp.com/')
         })
 
     def get_current_user(self):

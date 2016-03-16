@@ -55,7 +55,7 @@ def order_coffee():
 
     if order_response['success']:
         order = order_response['order']
-        formatted_time = re.sub(r"-08:00", "", order['ready_time'])
+        formatted_time = re.sub(r"-\d\d:\d\d", "", order['ready_time'])
         parsed_time = datetime.strptime(formatted_time, "%Y-%m-%dT%H:%M:%S")
         ready_hour = parsed_time.hour if parsed_time.hour <= 12 else parsed_time.hour - 12
         ready_minute = parsed_time.minute
