@@ -68,9 +68,10 @@ class OrderAhead(object):
         request = self.session.post(URLS['login'], data=data, headers=self.session.headers)
         parsed_response = request.json()
         token = parsed_response['data']['csrf_token']
+
         self.session.headers.update({
             'X-CSRF-Token': token,
-            'Cookie': '_orderahead_session=' + request.cookies.get('_orderahead_session', domain='https://www.orderaheadapp.com/')
+            'Cookie': '_orderahead_session=' + request.cookies.get('_orderahead_session', '')
         })
 
     def get_current_user(self):
