@@ -67,7 +67,7 @@ def order_coffee():
         )
         say(message)
 
-        leave_time = parsed_time - timedelta(minutes=5)
+        leave_time = parsed_time - timedelta(minutes=10)
         print 'LEAVE TIME'
         print 'hour: ' + str(leave_time.hour)
         print 'minute: ' + str(leave_time.minute)
