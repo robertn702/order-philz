@@ -45,7 +45,6 @@ def get_uuid():
 
     return re.sub(r"[xy]", lambda x: generate_uuid(x), seed_uuid)
 
-
 class OrderAhead(object):
     """Order Ahead Client"""
     token = None
@@ -73,6 +72,9 @@ class OrderAhead(object):
             'X-CSRF-Token': token,
             'Cookie': '_orderahead_session=' + request.cookies.get('_orderahead_session', '')
         })
+        print 'Login Session Headers'
+        print '====================='
+        print self.session.headers
 
     def get_current_user(self):
         """returns current user object"""
@@ -84,6 +86,9 @@ class OrderAhead(object):
         """returns current orders object"""
         request = self.session.get(URLS['current_orders'])
         if is_json(request):
+            print 'Current Orders'
+            print '=============='
+            print request.json()['orders']
             return request.json()['orders']
 
     def has_current_orders(self):
@@ -106,34 +111,6 @@ class OrderAhead(object):
                 return request.json()
         else:
             print 'failed to get store menu'
-
-    # def sessionOrder(self):
-    #     self.session_orderequest = {
-    #         "order": {
-    #             "store_id": "1z3ofd",
-    #             "bag_items_attributes": [
-    #                 {
-    #                   "menu_item_id": "23dgi0k7",
-    #                   "special_instructions": "",
-    #                   "quantity": 1,
-    #                   "selected_menu_item_options": "{\"67322\":[418458],\"67325\":[418464],\"67326\":[418470],\"67327\":[418475],\"67328\":[418482],\"67329\":[418485]}",
-    #                   "user_name": "Robert Niimi",
-    #                   "user_id": "21fgk8rp"
-    #                 }
-    #             ],
-    #             "preparation_type": 0,
-    #             "cart_guid": str(self.cart_guid),
-    #             "tier_delivery_fees": True,
-    #             "unwaivable_delivery_fees": True,
-    #             "store_slug": "philz-coffee-san-mateo--san-mateo-ca"
-    #         }
-    #     }
-
-    #     headers = s.headers.copy()
-    #     headers.update({'Content-Type': 'application/json'})
-
-    #     request = s.put(URLS['session-order'], data=json.dumps(self.session_order), headers=headers)
-    #     print 'Session Order Status Code: ' + str(r.status_code)
 
     def order(self):
         """places an order"""
