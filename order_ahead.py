@@ -97,7 +97,11 @@ class OrderAhead(object):
 
     def get_orders_by_store(self):
         """returns past orders by store"""
+        print 'GET ORDERS Session Headers'
+        print '====================='
+        print self.session.headers
         request = self.session.get(URLS['by_store'])
+        # request = requests.get(URLS['by_store'])
         if is_json(request):
             return request.json()['data']
         else:
