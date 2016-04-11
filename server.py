@@ -1,6 +1,3 @@
-from config import WATCH_DIR
-from urlparse import urlparse, parse_qs
-
 from flask import Flask, request
 
 from order_coffee import order_coffee
