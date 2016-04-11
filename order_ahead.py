@@ -85,11 +85,13 @@ class OrderAhead(object):
     def get_current_orders(self):
         """returns current orders object"""
         request = self.session.get(URLS['current_orders'])
+        print 'Current Orders'
+        print '=============='
         if is_json(request):
-            print 'Current Orders'
-            print '=============='
             print request.json()['orders']
             return request.json()['orders']
+        else:
+            print request.text
 
     def has_current_orders(self):
         """returns boolean whether user has a current order"""
