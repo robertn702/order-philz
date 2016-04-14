@@ -47,11 +47,9 @@ def get_uuid():
 
 class OrderAhead(object):
     """Order Ahead Client"""
-    token = None
-    cart_guid = None
-    session = requests.Session()
-
     def __init__(self, username, password):
+        self.token = None
+        self.session = requests.Session()
         self.session.headers.update(DEFAULT_HEADERS)
         self.login(username, password)
         self.login(username, password)
@@ -66,10 +64,10 @@ class OrderAhead(object):
 
         request = self.session.post(URLS['login'], data=data, headers=self.session.headers)
         parsed_response = request.json()
-        token = parsed_response['data']['csrf_token']
+        self.token = parsed_response['data']['csrf_token']
 
         self.session.headers.update({
-            'X-CSRF-Token': token,
+            'X-CSRF-Token': self.token,
             'Cookie': '_orderahead_session=' + request.cookies.get('_orderahead_session', '')
         })
         print 'Login Session Headers'
